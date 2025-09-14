@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدونتي — كتاباتي العربية</title>
+<style>
+body{font-family:'Cairo', sans-serif;background:#faf7f5;color:#111;margin:0;padding:0;}
+main{max-width:800px;margin:20px auto;padding:10px;}
+.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+.card img{max-width:100%;border-radius:8px;margin-bottom:8px;}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.tag{background:rgba(0,0,0,0.06);padding:4px 8px;border-radius:6px;font-size:12px;}
+.meta{color:#6b6b6b;font-size:13px;margin-bottom:6px;}
+</style>
+</head>
+<body>
+<main id="posts"></main>
+<script>
+fetch('posts.json')
+  .then(res => res.json())
+  .then(posts => {
+    const container = document.getElementById('posts');
+    posts.slice().reverse().forEach(p=>{
+      const card = document.createElement('div');
+      card.className='card';
+      card.innerHTML = `
+        ${p.image?`<img src="${p.image}" alt="صورة">`:''}
+        <h2>${p.title}</h2>
+        <div class="meta">${p.date}</div>
+        <div>${p.content}</div>
+        <div class="tags">${p.tags.map(t=>`<div class="tag">${t}</div>`).join('')}</div>
+      `;
+      container.appendChild(card);
+    });
+  })
+  .catch(err=>console.error(err));
+</script>
+</body>
+</html>
